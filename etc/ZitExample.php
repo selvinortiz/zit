@@ -8,6 +8,6 @@ $zit->bind( 'myService', function( $zit ) { return new stdClass; } );
 echo '<pre>';
 echo '<hr>';
 print_r( $zit );
-print_r( $zit->myService() );
 echo '<hr>';
+print_r( $zit->myService() );
 echo '</pre>';

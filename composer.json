@@ -1,6 +1,6 @@
 {
     "name": "selvinortiz/zit",
-    "description": "The smart and tiny dependency management library for PHP 5.3",
+    "description": "Tiny dependency management library for PHP 5.3",
     "keywords": ["zit", "dependency", "injection"],
     "license": "MIT",
     "homepage": "https://github.com/selvinortiz/zit",
