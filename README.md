@@ -1,4 +1,4 @@
-## Zit 0.1.0
+## Zit 0.2.0
 Tiny dependency management library for **PHP 5.3** *by* [Selvin Ortiz](http://twitter.com/selvinortiz)
 
 [![Build Status](https://travis-ci.org/selvinortiz/zit.png)](https://travis-ci.org/selvinortiz/zit)
@@ -11,3 +11,15 @@ Tiny dependency management library for **PHP 5.3** *by* [Selvin Ortiz](http://tw
 ### Requirements
 - PHP 5.3.2
 - [Composer](http://getcomposer.org) and [selvinortiz/zit](https://packagist.org/packages/selvinortiz/zit)
+
+### Changelog
+----
+#### 0.2.0
+- Removed the license from `SelvinOrtiz\Zit\Zit`
+- Added the license in its own file `/LICENSE`
+- Added references to `Pimple` and the `composer package`
+
+#### 0.1.0
+- Added basic usage example `/etc/ZitExample.php`
+- Added basic test suite `/tests/ZitTest.php`
+- Implemented the foundation for **Zit**
