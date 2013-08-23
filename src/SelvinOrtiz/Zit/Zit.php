@@ -1,6 +1,18 @@
 <?php
 namespace SelvinOrtiz\Zit;
 
+/**
+ * @=SelvinOrtiz\Zit
+ *
+ * Tiny dependency management library for PHP 5.3
+ *
+ * @author		Selvin Ortiz <selvin@selvinortiz.com>
+ * @package		Zit
+ * @version		0.2.0
+ * @category	DI, IoC (PHP)
+ * @copyright	2013 Selvin Ortiz
+ */
+
 class Zit implements IZit
 {
 	protected static $instance;

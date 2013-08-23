@@ -18,6 +18,7 @@ Tiny dependency management library for **PHP 5.3** *by* [Selvin Ortiz](http://tw
 - Removed the license from `SelvinOrtiz\Zit\Zit`
 - Added the license in its own file `/LICENSE`
 - Added references to `Pimple` and the `composer package`
+- Added lib/package description in `SelvinOrtiz\Zit\Zit`
 
 #### 0.1.0
 - Added basic usage example `/etc/ZitExample.php`
