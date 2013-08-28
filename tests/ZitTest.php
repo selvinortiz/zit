@@ -49,5 +49,6 @@ class ZitTest extends PHPUnit_Framework_TestCase
 		});
 
 		$this->assertTrue( $zit->myCallable() === 12345 );
+		$this->assertTrue( Zit::myCallable() === 12345 );
 	}
 }

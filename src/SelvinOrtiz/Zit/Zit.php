@@ -114,6 +114,11 @@ class Zit implements IZit
 		return $this->get( $id, $args );
 	}
 
+	public static function __callStatic( $id, $args=array() )
+	{
+		return static::getInstance()->get( $id, $args );
+	}
+
 	protected function execute( $callable, $args=array() )
 	{
 		if ( is_array( $args ) && count( $args ) ) {

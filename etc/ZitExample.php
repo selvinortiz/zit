@@ -20,7 +20,7 @@ $zit->stash( 'cartService', $cartService );
 
 dump( $zit->cartService(), 'First attempt to get an instance of CartMock' );
 dump( $zit->cartService(), 'Second attempt to get an instance of CartMock' );
-
+dump( SelvinOrtiz\Zit\Zit::cartService(), 'Third call made statically Zit::cartService()' );
 // Use extend() to add callable functions to the container
 $zit->extend( 'makeProduct', function() {
 	return new ProductMock;

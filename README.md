@@ -1,4 +1,4 @@
-## Zit 0.2.0
+## Zit 0.2.2
 Tiny dependency management library for **PHP 5.3** *by* [Selvin Ortiz](http://twitter.com/selvinortiz)
 
 [![Build Status](https://travis-ci.org/selvinortiz/zit.png)](https://travis-ci.org/selvinortiz/zit)
@@ -14,6 +14,13 @@ Tiny dependency management library for **PHP 5.3** *by* [Selvin Ortiz](http://tw
 
 ### Changelog
 ----
+#### 0.3.0
+- Added the ability to get dependencies out statically `Zit::dynamicName()` via `__callStatic`
+
+#### 0.2.1
+- Added simple mocks to illustrate instantiation via Zit
+- Improved examples by illustrating how services and callables behave
+
 #### 0.2.0
 - Removed the license from `SelvinOrtiz\Zit\Zit`
 - Added the license in its own file `/LICENSE`
