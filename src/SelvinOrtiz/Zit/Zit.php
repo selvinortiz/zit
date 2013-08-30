@@ -79,10 +79,26 @@ class Zit implements IZit
 	 * @extend()
 	 * Must bind the callable function and execute it by its id
 	 *
+	 * @todo :	Remove on Zit 0.5.0
 	 * @param	<str>	$id					The callable function id
 	 * @param	<obj>	$callable			The callable function
 	 */
 	public function extend( $id, \Closure $callable )
+	{
+		if ( is_callable( $callable ) || method_exists( $callable, '__invoke') ) {
+			$this->callables[ $id ] = $callable;
+		}
+	}
+
+	/**
+	 * @helper()
+	 * Must bind the callable function and execute it by its id
+	 *
+	 * @todo  :	Replace extend() on Zit 0.5.0
+	 * @param	<str>	$id					The callable function id
+	 * @param	<obj>	$callable			The callable function
+	 */
+	public function helper( $id, \Closure $callable )
 	{
 		if ( is_callable( $callable ) || method_exists( $callable, '__invoke') ) {
 			$this->callables[ $id ] = $callable;
