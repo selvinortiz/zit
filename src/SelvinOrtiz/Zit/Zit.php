@@ -31,9 +31,9 @@ class Zit implements IZit
 	 */
 	public static function getInstance()
 	{
-		if ( is_null( static::$instance ) ) {
-			$callingClassName	= get_called_class();
-			static::$instance	= new $callingClassName;
+		if ( null === static::$instance ) {
+			$calledClass		= get_called_class();
+			static::$instance	= new $calledClass;
 		}
 
 		return static::$instance;
@@ -67,15 +67,12 @@ class Zit implements IZit
 	 *
 	 * @param	<str>	$id					The service instance id
 	 * @param	<obj>	$serviceInstance	The service instance
-	 * @return	<obj>						The service instance
 	 */
 	public function stash( $id, $serviceInstance )
 	{
 		if ( is_object( $serviceInstance ) ) {
 			$this->services[ $id ] = $serviceInstance;
 		}
-
-		return $this;
 	}
 
 	/**
@@ -84,15 +81,12 @@ class Zit implements IZit
 	 *
 	 * @param	<str>	$id					The callable function id
 	 * @param	<obj>	$callable			The callable function
-	 * @return	<mix>						The returned value from callable
 	 */
 	public function extend( $id, \Closure $callable )
 	{
 		if ( is_callable( $callable ) || method_exists( $callable, '__invoke') ) {
 			$this->callables[ $id ] = $callable;
 		}
-
-		return $this;
 	}
 
 	public function get( $id, $args=array() )
