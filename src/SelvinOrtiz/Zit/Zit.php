@@ -8,7 +8,7 @@ namespace SelvinOrtiz\Zit;
  *
  * @author		Selvin Ortiz <selvin@selvinortiz.com>
  * @package		Zit
- * @version		0.2.0
+ * @version		0.4.0
  * @category	DI, IoC (PHP)
  * @copyright	2013 Selvin Ortiz
  */
@@ -135,22 +135,22 @@ class Zit implements IZit
 			$count = count( $args );
 			switch( $count ) {
 				case 1:
-					return $callable->__invoke( $args[ 0 ], $this );
+					return $callable->__invoke( $this, $args[ 0 ] );
 				break;
 				case 2:
-					return $callable->__invoke( $args[ 0 ], $args[ 1 ], $this );
+					return $callable->__invoke( $this, $args[ 0 ], $args[ 1 ] );
 				break;
 				case 3:
-					return $callable->__invoke( $args[ 0 ], $args[ 1 ], $args[ 2 ], $this );
+					return $callable->__invoke( $this, $args[ 0 ], $args[ 1 ], $args[ 2 ] );
 				break;
 				case 4:
-					return $callable->__invoke( $args[ 0 ], $args[ 1 ], $args[ 2 ], $args[ 3 ], $this );
+					return $callable->__invoke( $this, $args[ 0 ], $args[ 1 ], $args[ 2 ], $args[ 3 ] );
 				break;
 				case 5:
-					return $callable->__invoke( $args[ 0 ], $args[ 1 ], $args[ 2 ], $args[ 3 ], $args[ 4 ], $this );
+					return $callable->__invoke( $this, $args[ 0 ], $args[ 1 ], $args[ 2 ], $args[ 3 ], $args[ 4 ] );
 				break;
 				default:
-					return $callable->__invoke( $args, $this );
+					return $callable->__invoke( $this, $args );
 				break;
 			}
 		}

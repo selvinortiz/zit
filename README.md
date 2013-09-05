@@ -1,4 +1,4 @@
-## Zit 0.2.2
+## Zit 0.4.0
 Tiny dependency management library for **PHP 5.3** *by* [Selvin Ortiz](http://twitter.com/selvinortiz)
 
 [![Build Status](https://travis-ci.org/selvinortiz/zit.png)](https://travis-ci.org/selvinortiz/zit)
@@ -14,6 +14,9 @@ Tiny dependency management library for **PHP 5.3** *by* [Selvin Ortiz](http://tw
 
 ### Changelog
 ----
+#### 0.4.0
+- Ensured that the `Zit` instance always get passed as the first argument to all callables.
+
 #### 0.3.0
 - Added the ability to get dependencies out statically `Zit::dynamicName()` via `__callStatic`
 
