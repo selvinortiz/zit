@@ -8,7 +8,7 @@ namespace SelvinOrtiz\Zit;
  *
  * @author		Selvin Ortiz <selvin@selvinortiz.com>
  * @package		Zit
- * @version		0.4.0
+ * @version		0.4.1
  * @category	DI, IoC (PHP)
  * @copyright	2013 Selvin Ortiz
  */
@@ -79,7 +79,6 @@ class Zit implements IZit
 	 * @extend()
 	 * Must bind the callable function and execute it by its id
 	 *
-	 * @todo :	Remove on Zit 0.5.0
 	 * @param	<str>	$id					The callable function id
 	 * @param	<obj>	$callable			The callable function
 	 */
@@ -91,10 +90,10 @@ class Zit implements IZit
 	}
 
 	/**
-	 * @helper()
+	 * @helper() (deprecated)
 	 * Must bind the callable function and execute it by its id
 	 *
-	 * @todo  :	Replace extend() on Zit 0.5.0
+	 * @todo	Remove on Zit 0.5.0
 	 * @param	<str>	$id					The callable function id
 	 * @param	<obj>	$callable			The callable function
 	 */
@@ -107,6 +106,11 @@ class Zit implements IZit
 
 	public function get( $id, $args=array() )
 	{
+		return $this->pop( $id, $args );
+	}
+
+	protected function pop( $id, $args=array() )
+	{
 		if ( array_key_exists( $id, $this->services ) ) {
 			return $this->services[ $id ];
 		}
@@ -116,17 +120,26 @@ class Zit implements IZit
 			return $this->execute( $callable, $args );
 		}
 
-		throw new \Exception( "The dependency with id of {$id} is missing." );
+		throw new \Exception( "The dependency with id of ({$id}) is missing." );
+	}
+
+	public function __get( $id )
+	{
+		if ( property_exists( $this, $id ) ) {
+			return $this->{ $id };
+		} else {
+			return $this->pop( $id );
+		}
 	}
 
 	public function __call( $id, $args=array() )
 	{
-		return $this->get( $id, $args );
+		return $this->pop( $id, $args );
 	}
 
 	public static function __callStatic( $id, $args=array() )
 	{
-		return static::getInstance()->get( $id, $args );
+		return static::getInstance()->pop( $id, $args );
 	}
 
 	protected function execute( $callable, $args=array() )

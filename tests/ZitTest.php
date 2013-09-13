@@ -36,6 +36,7 @@ class ZitTest extends PHPUnit_Framework_TestCase
 
 		$zit->stash( 'myService', $instance );
 
+		$this->assertTrue( $zit->myService instanceof \stdClass );
 		$this->assertTrue( $zit->myService() instanceof \stdClass );
 		$this->assertTrue( $zit->myService()->id === 'myServiceId' );
 	}
