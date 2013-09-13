@@ -1,4 +1,4 @@
-## Zit 0.4.0
+## Zit 0.4.1
 Tiny dependency management library for **PHP 5.3** *by* [Selvin Ortiz](http://twitter.com/selvinortiz)
 
 [![Build Status](https://travis-ci.org/selvinortiz/zit.png)](https://travis-ci.org/selvinortiz/zit)
@@ -13,6 +13,13 @@ Tiny dependency management library for **PHP 5.3** *by* [Selvin Ortiz](http://tw
 - [Composer](http://getcomposer.org) and [selvinortiz/zit](https://packagist.org/packages/selvinortiz/zit)
 
 ### Changelog
+----
+#### 0.4.1
+- Added the protected `pop()` method
+- Added the ability to get dependencies via `__get()` as in `Zit::$dependency`
+- Updated the `get()` to become a simple alias to `pop()`
+- Deprecated (not removed) `helper()` method
+
 ----
 #### 0.4.0
 - Ensured that the `Zit` instance always get passed as the first argument to all callables.
