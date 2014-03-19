@@ -8,9 +8,9 @@ namespace SelvinOrtiz\Zit;
  *
  * @author		Selvin Ortiz <selvin@selvinortiz.com>
  * @package		Zit
- * @version		0.4.1
+ * @version		0.5.0
  * @category	DI, IoC (PHP)
- * @copyright	2013 Selvin Ortiz
+ * @copyright	2014 Selvin Ortiz
  */
 
 class Zit implements IZit
@@ -24,14 +24,14 @@ class Zit implements IZit
 	protected function __clone()		{}
 
 	/**
-	 * @getInstance()
-	 * Fetch|Make the instance of Zit|extending class called statically
+	 * Instantiate Zit or the extending, statically called class
 	 *
-	 * @return	<obj>
+	 * @return	object
 	 */
 	public static function getInstance()
 	{
-		if ( null === static::$instance ) {
+		if (null === static::$instance)
+		{
 			$calledClass		= get_called_class();
 			static::$instance	= new $calledClass;
 		}
@@ -40,21 +40,20 @@ class Zit implements IZit
 	}
 
 	/**
-	 * @bind()
-	 * Must bind the service generator and resolve it by its id
+	 * Binds the service generator and resolves it by its id
 	 *
-	 * @param	<str>	$id					The service generator id
-	 * @param	<obj>	$serviceGenerator	The service generator closure/function
-	 * @return	<obj>						The generated (static) service instance
+	 * @param	string		$id					The service generator id
+	 * @param	Callable	$serviceGenerator	The service generator closure/function
 	 */
-	public function bind( $id, \Closure $serviceGenerator )
+	public function bind($id, \Closure $serviceGenerator)
 	{
-		$this->callables[ (string) $id ] = function( $zit ) use( $serviceGenerator )
+		$this->callables[(string) $id] = function($zit) use($serviceGenerator)
 		{
 			static $object;
 
-			if ( null === $object ) {
-				$object = $serviceGenerator( $zit );
+			if (null === $object)
+			{
+				$object = $serviceGenerator($zit);
 			}
 
 			return $object;
@@ -62,112 +61,69 @@ class Zit implements IZit
 	}
 
 	/**
-	 * @stash()
-	 * Stash away a service instance and resolve it by its id
+	 * Stashes away a service instance and resolves it by its id
 	 *
-	 * @param	<str>	$id					The service instance id
-	 * @param	<obj>	$serviceInstance	The service instance
+	 * @param	string	$id					The service instance id
+	 * @param	object	$serviceInstance	The service instance
 	 */
-	public function stash( $id, $serviceInstance )
+	public function stash($id, $serviceInstance)
 	{
-		if ( is_object( $serviceInstance ) ) {
-			$this->services[ $id ] = $serviceInstance;
+		if (is_object($serviceInstance))
+		{
+			$this->services[$id] = $serviceInstance;
 		}
 	}
 
 	/**
-	 * @extend()
-	 * Must bind the callable function and execute it by its id
+	 * Binds the callable function and executes it by its id
 	 *
-	 * @param	<str>	$id					The callable function id
-	 * @param	<obj>	$callable			The callable function
+	 * @param	string	$id			The callable function id
+	 * @param	Closure	$callable	The callable function
 	 */
 	public function extend( $id, \Closure $callable )
 	{
-		if ( is_callable( $callable ) || method_exists( $callable, '__invoke') ) {
-			$this->callables[ $id ] = $callable;
+		if (is_callable( $callable) || method_exists( $callable, '__invoke'))
+		{
+			$this->callables[$id] = $callable;
 		}
 	}
 
-	/**
-	 * @helper() (deprecated)
-	 * Must bind the callable function and execute it by its id
-	 *
-	 * @todo	Remove on Zit 0.5.0
-	 * @param	<str>	$id					The callable function id
-	 * @param	<obj>	$callable			The callable function
-	 */
-	public function helper( $id, \Closure $callable )
+	protected function pop($id, $args=array() )
 	{
-		if ( is_callable( $callable ) || method_exists( $callable, '__invoke') ) {
-			$this->callables[ $id ] = $callable;
+		if (array_key_exists($id, $this->services))
+		{
+			return $this->services[$id];
+		}
+
+		if (array_key_exists( $id, $this->callables))
+		{
+			$callable = $this->callables[$id];
+
+			return call_user_func_array($callable, array_merge(array($this), $args));
+		}
+
+		throw new \Exception("The dependency with id of ({$id}) is missing.");
+	}
+
+	public function __get($id)
+	{
+		if (property_exists($this, $id))
+		{
+			return $this->{$id};
+		}
+		else
+		{
+			return $this->pop($id);
 		}
 	}
 
-	public function get( $id, $args=array() )
+	public function __call($id, $args=array())
 	{
-		return $this->pop( $id, $args );
+		return $this->pop($id, $args);
 	}
 
-	protected function pop( $id, $args=array() )
-	{
-		if ( array_key_exists( $id, $this->services ) ) {
-			return $this->services[ $id ];
-		}
-
-		if ( array_key_exists( $id, $this->callables ) ) {
-			$callable = $this->callables[ $id ];
-			return $this->execute( $callable, $args );
-		}
-
-		throw new \Exception( "The dependency with id of ({$id}) is missing." );
-	}
-
-	public function __get( $id )
-	{
-		if ( property_exists( $this, $id ) ) {
-			return $this->{ $id };
-		} else {
-			return $this->pop( $id );
-		}
-	}
-
-	public function __call( $id, $args=array() )
-	{
-		return $this->pop( $id, $args );
-	}
-
-	public static function __callStatic( $id, $args=array() )
+	public static function __callStatic($id, $args=array())
 	{
 		return static::getInstance()->pop( $id, $args );
-	}
-
-	protected function execute( $callable, $args=array() )
-	{
-		if ( is_array( $args ) && count( $args ) ) {
-			$count = count( $args );
-			switch( $count ) {
-				case 1:
-					return $callable->__invoke( $this, $args[ 0 ] );
-				break;
-				case 2:
-					return $callable->__invoke( $this, $args[ 0 ], $args[ 1 ] );
-				break;
-				case 3:
-					return $callable->__invoke( $this, $args[ 0 ], $args[ 1 ], $args[ 2 ] );
-				break;
-				case 4:
-					return $callable->__invoke( $this, $args[ 0 ], $args[ 1 ], $args[ 2 ], $args[ 3 ] );
-				break;
-				case 5:
-					return $callable->__invoke( $this, $args[ 0 ], $args[ 1 ], $args[ 2 ], $args[ 3 ], $args[ 4 ] );
-				break;
-				default:
-					return $callable->__invoke( $this, $args );
-				break;
-			}
-		}
-
-		return $callable->__invoke( $this );
 	}
 }

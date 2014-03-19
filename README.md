@@ -1,4 +1,4 @@
-## Zit 0.4.1
+## Zit 0.5.0
 Tiny dependency management library for **PHP 5.3** *by* [Selvin Ortiz](http://twitter.com/selvinortiz)
 
 [![Build Status](https://travis-ci.org/selvinortiz/zit.png)](https://travis-ci.org/selvinortiz/zit)
@@ -13,6 +13,15 @@ Tiny dependency management library for **PHP 5.3** *by* [Selvin Ortiz](http://tw
 - [Composer](http://getcomposer.org) and [selvinortiz/zit](https://packagist.org/packages/selvinortiz/zit)
 
 ### Changelog
+
+----
+#### 0.5.0
+- Improved dynamically called closures
+- Removed `get()`
+- Removed previously deprecated `helper()`
+- Updated code comments
+- Improved speed and performance for PHP 5.3.10 _and above_
+
 ----
 #### 0.4.1
 - Added the protected `pop()` method
