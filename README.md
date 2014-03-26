@@ -20,6 +20,7 @@ Tiny dependency management library for **PHP 5.3** *by* [Selvin Ortiz](http://tw
 - Adds `multiton` implementation
 - Removes `static::$instance`
 - Removes `singleton` restrictions
+
 ----
 #### 0.5.0
 - Improved dynamically called closures
