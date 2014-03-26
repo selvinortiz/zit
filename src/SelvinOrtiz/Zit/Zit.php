@@ -15,7 +15,7 @@ namespace SelvinOrtiz\Zit;
 
 class Zit implements IZit
 {
-	protected static $instance;
+	protected static $instances;
 
 	protected $services		= array();
 	protected $callables	= array();
@@ -30,13 +30,14 @@ class Zit implements IZit
 	 */
 	public static function getInstance()
 	{
-		if (null === static::$instance)
+		$calledClass = get_called_class();
+
+		if ( ! isset(static::$instances[$calledClass]))
 		{
-			$calledClass		= get_called_class();
-			static::$instance	= new $calledClass;
+			static::$instances[$calledClass] = new $calledClass;
 		}
 
-		return static::$instance;
+		return static::$instances[$calledClass];
 	}
 
 	/**
