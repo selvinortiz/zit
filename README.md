@@ -1,4 +1,4 @@
-## Zit 0.5.0
+## Zit 0.5.1
 Tiny dependency management library for **PHP 5.3** *by* [Selvin Ortiz](http://twitter.com/selvinortiz)
 
 [![Build Status](https://travis-ci.org/selvinortiz/zit.png)](https://travis-ci.org/selvinortiz/zit)
@@ -14,6 +14,12 @@ Tiny dependency management library for **PHP 5.3** *by* [Selvin Ortiz](http://tw
 
 ### Changelog
 
+----
+#### 0.5.1
+- Adds `static::$instances`
+- Adds `multiton` implementation
+- Removes `static::$instance`
+- Removes `singleton` restrictions
 ----
 #### 0.5.0
 - Improved dynamically called closures
