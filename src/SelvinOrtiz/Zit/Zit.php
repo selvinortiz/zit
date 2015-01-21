@@ -111,15 +111,6 @@ class Zit implements IZit
 
 	public function __get($id)
 	{
-		$reflector = new ReflectionClass($this);
-		$properties = $reflector->getProperties(ReflectionProperty::IS_PUBLIC);
-
-		foreach ($properties as $property) {
-			if ($property->getName() === $id) {
-				return $this->{$id};
-			}
-		}
-
 		return $this->pop($id);
 	}
 
