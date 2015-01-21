@@ -1,9 +1,6 @@
 <?php
 namespace SelvinOrtiz\Zit;
 
-use ReflectionClass;
-use ReflectionProperty;
-
 /**
  * @=SelvinOrtiz\Zit
  *
