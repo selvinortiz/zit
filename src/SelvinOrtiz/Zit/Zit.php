@@ -20,7 +20,7 @@ class Zit implements IZit
 	protected $services		= array();
 	protected $callables	= array();
 
-	protected function __construct() 	{}
+	protected function __construct()	{}
 	protected function __clone()		{}
 
 	/**
@@ -108,14 +108,7 @@ class Zit implements IZit
 
 	public function __get($id)
 	{
-		if (property_exists($this, $id))
-		{
-			return $this->{$id};
-		}
-		else
-		{
-			return $this->pop($id);
-		}
+		return $this->pop($id);
 	}
 
 	public function __call($id, $args=array())
