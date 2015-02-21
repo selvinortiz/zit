@@ -2,15 +2,15 @@
 namespace SelvinOrtiz\Zit;
 
 /**
- * @=SelvinOrtiz\Zit
- *
  * Tiny dependency management library for PHP 5.3
  *
- * @author		Selvin Ortiz <selvin@selvinortiz.com>
- * @package		Zit
- * @version		0.5.0
- * @category	DI, IoC (PHP)
- * @copyright	2014 Selvin Ortiz
+ * Class Zit
+ *
+ * @author    Selvin Ortiz - http://selv.in
+ * @package   SelvinOrtiz\Zit
+ * @version   0.5.2
+ * @category  DI, IoC (PHP)
+ * @copyright 2014-2015 Selvin Ortiz
  */
 
 class Zit implements IZit
