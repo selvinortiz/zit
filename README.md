@@ -1,4 +1,4 @@
-## Zit 0.5.1
+## Zit 0.5.2
 Tiny dependency management library for **PHP 5.3** *by* [Selvin Ortiz](http://twitter.com/selvinortiz)
 
 [![Build Status](https://travis-ci.org/selvinortiz/zit.png)](https://travis-ci.org/selvinortiz/zit)
