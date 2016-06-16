@@ -47,7 +47,6 @@ Zit::make()->bind('db', function($zit) {
 Zit::make()->stash('session', new Session())
 
 // You can now access the session statically
-Zit::session;
 Zit::session();
 ```
 
@@ -60,7 +59,7 @@ Zit::make()->extend('logout', function($zit) {
 });
 
 Zit::logout();
-// Would log the user out via the hypotherical session service
+// Would log the user out via the hypothetical session service
 ```
 
 ---
