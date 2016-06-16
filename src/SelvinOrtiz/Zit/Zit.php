@@ -1,123 +1,174 @@
 <?php
+
 namespace SelvinOrtiz\Zit;
 
 /**
- * Tiny dependency management library for PHP 5.3
+ * Tiny dependency injection library for PHP
  *
  * Class Zit
  *
- * @author    Selvin Ortiz - http://selv.in
+ * @author    Selvin Ortiz - https://selvinortiz.com
  * @package   SelvinOrtiz\Zit
- * @version   0.5.2
+ * @version   1.0.0
  * @category  DI, IoC (PHP)
- * @copyright 2014-2015 Selvin Ortiz
+ * @copyright 2014-2016 Selvin Ortiz
  */
 
 class Zit implements IZit
 {
-	protected static $instances;
+    /**
+     * @var static
+     */
+    protected static $instances;
 
-	protected $services		= array();
-	protected $callables	= array();
+    protected $services  = array();
+    protected $callables = array();
 
-	protected function __construct()	{}
-	protected function __clone()		{}
+    /**
+     * Prevents direct instantiation
+     */
+    protected function __construct()
+    {
+    }
 
-	/**
-	 * Instantiate Zit or the extending, statically called class
-	 *
-	 * @return	object
-	 */
-	public static function getInstance()
-	{
-		$calledClass = get_called_class();
+    /**
+     * Prevents cloning
+     */
+    protected function __clone()
+    {
+    }
 
-		if ( ! isset(static::$instances[$calledClass]))
-		{
-			static::$instances[$calledClass] = new $calledClass;
-		}
+    /**
+     * Instantiates Zit or the extending container
+     *
+     * @deprecated Deprecated since 1.0.0
+     * @see        make()
+     *
+     * @return static
+     */
+    public static function getInstance()
+    {
+        return static::make();
+    }
 
-		return static::$instances[$calledClass];
-	}
+    /**
+     * Returns an instance of Zit or an extending class
+     *
+     * @return static
+     */
+    public static function make()
+    {
+        $calledClass = get_called_class();
 
-	/**
-	 * Binds the service generator and resolves it by its id
-	 *
-	 * @param	string		$id					The service generator id
-	 * @param	Callable	$serviceGenerator	The service generator closure/function
-	 */
-	public function bind($id, \Closure $serviceGenerator)
-	{
-		$this->callables[(string) $id] = function($zit) use($serviceGenerator)
-		{
-			static $object;
+        if (!isset(static::$instances[$calledClass])) {
+            static::$instances[$calledClass] = new $calledClass;
+        }
 
-			if (null === $object)
-			{
-				$object = $serviceGenerator($zit);
-			}
+        return static::$instances[$calledClass];
+    }
 
-			return $object;
-		};
-	}
+    /**
+     * Binds the service generator and resolves it by its id
+     *
+     * @param string   $id               The service generator id
+     * @param callable $serviceGenerator The service generator closure/function
+     */
+    public function bind($id, callable $serviceGenerator)
+    {
+        $this->callables[(string)$id] = function ($zit) use ($serviceGenerator) {
+            static $object;
 
-	/**
-	 * Stashes away a service instance and resolves it by its id
-	 *
-	 * @param	string	$id					The service instance id
-	 * @param	object	$serviceInstance	The service instance
-	 */
-	public function stash($id, $serviceInstance)
-	{
-		if (is_object($serviceInstance))
-		{
-			$this->services[$id] = $serviceInstance;
-		}
-	}
+            if (null === $object) {
+                $object = $serviceGenerator($zit);
+            }
 
-	/**
-	 * Binds the callable function and executes it by its id
-	 *
-	 * @param	string	$id			The callable function id
-	 * @param	Closure	$callable	The callable function
-	 */
-	public function extend( $id, \Closure $callable )
-	{
-		if (is_callable( $callable) || method_exists( $callable, '__invoke'))
-		{
-			$this->callables[$id] = $callable;
-		}
-	}
+            return $object;
+        };
+    }
 
-	protected function pop($id, $args=array() )
-	{
-		if (array_key_exists($id, $this->services))
-		{
-			return $this->services[$id];
-		}
+    /**
+     * Stashes away a service instance and resolves it by its id
+     *
+     * @param    string $id      The service instance id
+     * @param    object $service The service instance
+     */
+    public function stash($id, $service)
+    {
+        if (is_object($service)) {
+            $this->services[$id] = $service;
+        }
+    }
 
-		if (array_key_exists( $id, $this->callables))
-		{
-			$callable = $this->callables[$id];
+    /**
+     * Binds the callable function and executes it by its id
+     *
+     * @param string   $id       The callable function id
+     * @param callable $callback The callable function
+     */
+    public function extend($id, callable $callback)
+    {
+        if (is_callable($callback) || method_exists($callback, '__invoke')) {
+            $this->callables[$id] = $callback;
+        }
+    }
 
-			return call_user_func_array($callable, array_merge(array($this), $args));
-		}
+    /**
+     * Pops a dependency out of the container
+     *
+     * @param string $id
+     * @param array  $args
+     *
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    protected function pop($id, $args = array())
+    {
+        if (array_key_exists($id, $this->services)) {
+            return $this->services[$id];
+        }
 
-		throw new \Exception("The dependency with id of ({$id}) is missing.");
-	}
+        if (array_key_exists($id, $this->callables)) {
+            $callback = $this->callables[$id];
 
-	public function __get($id)
-	{
-		return $this->pop($id);
-	}
+            return call_user_func_array($callback, array_merge(array($this), $args));
+        }
 
-	public function __call($id, $args=array())
-	{
-		return $this->pop($id, $args);
-	}
+        throw new \Exception("The dependency with id of ({$id}) is missing.");
+    }
 
-	public static function __callStatic($id, $args=array())
-	{
-		return static::getInstance()->pop( $id, $args );
-	}
+    /**
+     * @param string $id
+     *
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function __get($id)
+    {
+        return $this->pop($id);
+    }
+
+    /**
+     * @param string $id
+     * @param array  $args
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public function __call($id, $args = array())
+    {
+        return $this->pop($id, $args);
+    }
+
+    /**
+     * @param string $id
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public static function __callStatic($id, $args = array())
+    {
+        return static::getInstance()->pop($id, $args);
+    }
 }

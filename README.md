@@ -1,64 +1,69 @@
-## Zit 0.5.2
-Tiny dependency management library for **PHP 5.3** *by* [Selvin Ortiz](http://twitter.com/selvinortiz)
+![Zit](Zit.png)
 
 [![Build Status](https://travis-ci.org/selvinortiz/zit.png)](https://travis-ci.org/selvinortiz/zit)
 [![Total Downloads](https://poser.pugx.org/selvinortiz/zit/d/total.png)](https://packagist.org/packages/selvinortiz/zit)
 [![Latest Stable Version](https://poser.pugx.org/selvinortiz/zit/v/stable.png)](https://packagist.org/packages/selvinortiz/zit)
 
 ### Description
-**Zit** is a small dependency injection container similar to and inspired by [Pimple](https://github.com/fabpot/Pimple)
+>**Zit** is a tiny dependency injection container similar to and inspired by [Pimple](https://github.com/fabpot/Pimple)
 
 ### Requirements
-- PHP 5.3.2
+- PHP 5.4
 - [Composer](http://getcomposer.org) and [selvinortiz/zit](https://packagist.org/packages/selvinortiz/zit)
 
-### Changelog
+### Install
+```bash
+composer require selvinortiz/zit
+```
 
-----
-#### 0.5.2
-- Adds changes from pull request #1
-- Updates some composer properties
+### Test
+```bash
+sh spec.sh
+```
 
-----
-#### 0.5.1
-- Adds `static::$instances`
-- Adds `multiton` implementation
-- Removes `static::$instance`
-- Removes `singleton` restrictions
+### Usage
+```php
+// 1. Make a new instance of Zit
+// 2. Start injecting stuff
+Zit::make();
+```
 
-----
-#### 0.5.0
-- Improved dynamically called closures
-- Removed `get()`
-- Removed previously deprecated `helper()`
-- Updated code comments
-- Improved speed and performance for PHP 5.3.10 _and above_
+### Reference
 
-----
-#### 0.4.1
-- Added the protected `pop()` method
-- Added the ability to get dependencies via `__get()` as in `Zit::$dependency`
-- Updated the `get()` to become a simple alias to `pop()`
-- Deprecated (not removed) `helper()` method
+#### `bind($id, callable $serviceGenerator)`
+> Binds the service generator function to be _popped_ later
 
-----
-#### 0.4.0
-- Ensured that the `Zit` instance always get passed as the first argument to all callables.
+```php
+Zit::make()->bind('db', function($zit) {
+   return new Db(); 
+});
+// Db will only be generated once
+```
 
-#### 0.3.0
-- Added the ability to get dependencies out statically `Zit::dynamicName()` via `__callStatic`
+#### `stash($id, $service)`
+> Stashes away a service to be _popped_ later
 
-#### 0.2.1
-- Added simple mocks to illustrate instantiation via Zit
-- Improved examples by illustrating how services and callables behave
+```php
+Zit::make()->stash('session', new Session())
 
-#### 0.2.0
-- Removed the license from `SelvinOrtiz\Zit\Zit`
-- Added the license in its own file `/LICENSE`
-- Added references to `Pimple` and the `composer package`
-- Added lib/package description in `SelvinOrtiz\Zit\Zit`
+// You can now access the session statically
+Zit::session;
+Zit::session();
+```
 
-#### 0.1.0
-- Added basic usage example `/etc/ZitExample.php`
-- Added basic test suite `/tests/ZitTest.php`
-- Implemented the foundation for **Zit**
+#### `extend($id, $callback)`
+> Extends _Zit_ with your own functions
+
+```php
+Zit::make()->extend('logout', function($zit) {
+    $zit->session->logout();
+});
+
+Zit::logout();
+// Would log the user out via the hypotherical session service
+```
+
+---
+
+### License
+**Zit** is open source software licensed under the **MIT License**
