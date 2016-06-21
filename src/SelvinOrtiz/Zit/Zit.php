@@ -9,7 +9,7 @@ namespace SelvinOrtiz\Zit;
  *
  * @author    Selvin Ortiz - https://selvinortiz.com
  * @package   SelvinOrtiz\Zit
- * @version   1.0.0
+ * @version   1.0.1
  * @category  DI, IoC (PHP)
  * @copyright 2014-2016 Selvin Ortiz
  */
@@ -21,7 +21,7 @@ class Zit implements IZit
      */
     protected static $instances;
 
-    protected $services  = array();
+    protected $services = array();
     protected $callables = array();
 
     /**
@@ -58,13 +58,16 @@ class Zit implements IZit
      */
     public static function make()
     {
-        $calledClass = get_called_class();
+        $name = get_called_class();
 
-        if (!isset(static::$instances[$calledClass])) {
-            static::$instances[$calledClass] = new $calledClass;
+        if (!isset(static::$instances[$name])) {
+
+            $instance = new $name();
+
+            static::$instances[$name] = method_exists($instance, 'boot') ? $instance->boot() : $instance;
         }
 
-        return static::$instances[$calledClass];
+        return static::$instances[$name];
     }
 
     /**
