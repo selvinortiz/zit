@@ -1,10 +1,12 @@
 language: php
 
 php:
-  - 5.5
+  - 7.1
+  - 7.2
+  - 7.3
 
 before_script:
-  - wget http://getcomposer.org/composer.phar
-  - php composer.phar install
+  - composer selfupdate
+  - composer install
 
-script: phpunit --coverage-text
+script: vendor/bin/phpunit --coverage-text

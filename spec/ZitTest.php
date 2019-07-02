@@ -1,9 +1,10 @@
 <?php
 
 use SelvinOrtiz\Zit\Zit;
+use PHPUnit\Framework\TestCase;
 
 
-class ZitTest extends PHPUnit_Framework_TestCase
+class ZitTest extends TestCase
 {
     public function test_bind()
     {
